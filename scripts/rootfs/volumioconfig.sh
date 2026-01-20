@@ -626,7 +626,10 @@ log "Fixing mismatched udev rules"  "info"
 log "Enable Volumio Triggerhappy Rebind Service"
 ln -s /lib/systemd/system/th-udev-rebind.service /etc/systemd/system/multi-user.target.wants/th-udev-rebind.service
 
-log "Mute Default Triggerhappy udev rule"
+log "Adding nobody user to input group for triggerhappy"  "info"
+usermod -a -G input nobody
+
+log "Mute Default Triggerhappy udev rule"  "info"
 # This is to prevent triggerhappy from triggering on udev events before sockets are created
 # and before the triggerhappy service is started.
 ln -s /dev/null /etc/udev/rules.d/60-triggerhappy.rules
@@ -634,6 +637,6 @@ ln -s /dev/null /etc/udev/rules.d/60-triggerhappy.rules
 #####################
 #TRIGGER HAPPY broken socket#------------------------
 #####################
-log "Disable and mask triggerhappy.socket"
+log "Disable and mask triggerhappy.socket"  "info"
 systemctl disable triggerhappy.socket
 ln -sf /dev/null /etc/systemd/system/sockets.target.wants/triggerhappy.socket
